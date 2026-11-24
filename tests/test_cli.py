@@ -106,6 +106,27 @@ class TestCli(unittest.TestCase):
                 output = fake_out.getvalue()
                 self.assertIn("doc_algebra#chunk_0", output)
 
+    def test_main_output_json(self) -> None:
+        with patch("sys.stdout", new=io.StringIO()) as fake_out:
+            code = main(["--query", "compilers", "-k", "2", "-o", "json"])
+            self.assertEqual(code, 0)
+            data = json.loads(fake_out.getvalue())
+            self.assertEqual(len(data), 2)
+            self.assertIn("chunk_id", data[0])
+            self.assertIn("score", data[0])
+            self.assertIn("rank", data[0])
+            self.assertIn("text", data[0])
+            self.assertIn("metadata", data[0])
+
+    def test_main_output_jsonl(self) -> None:
+        with patch("sys.stdout", new=io.StringIO()) as fake_out:
+            code = main(["--query", "compilers", "-k", "2", "--output", "jsonl"])
+            self.assertEqual(code, 0)
+            lines = [json.loads(line) for line in fake_out.getvalue().splitlines() if line.strip()]
+            self.assertEqual(len(lines), 2)
+            self.assertIn("chunk_id", lines[0])
+            self.assertIn("text", lines[0])
+
 
 if __name__ == "__main__":
     unittest.main()
