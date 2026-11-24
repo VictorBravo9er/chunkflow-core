@@ -3,8 +3,8 @@ from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
 import sys
+from pathlib import Path
 from typing import TextIO
 
 from chunkflow.chunker import SlidingWindowChunker
@@ -178,7 +178,7 @@ def main(argv: list[str] | None = None) -> int:
                 "text": r.chunk.text,
                 "metadata": dict(r.chunk.metadata),
             }
-            print(json.dumps(item))
+            print(json.dumps(item, indent=2))
     else:
         print(f"Top {len(results)} matches for query '{args.query}':\n")
         for r in results:
