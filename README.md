@@ -148,6 +148,7 @@ Command-line flags:
 - `--query`, `-q` *(required)*: Query string to embed and search.
 - `--input`, `-i` *(optional, repeatable)*: Path to file(s), directory, or `-` for stdin.
 - `--format` *(optional, default: `auto`)*: Format for input (`auto`, `text`, `jsonl`).
+- `--output`, `-o` *(optional, default: `jsonl`)*: Output format (`text`, `json`, `jsonl`). Formats results into structured records for downstream tools.
 - `--top-k`, `-k` *(optional, default: 3)*: Maximum number of ranked results to return.
 - `--chunk-size` *(optional, default: 100)*: Sliding window chunk size in words.
 - `--chunk-overlap` *(optional, default: 20)*: Word overlap between adjacent chunks.

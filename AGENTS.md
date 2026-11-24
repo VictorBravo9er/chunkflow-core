@@ -4,7 +4,7 @@ Stack: Python
 
 ## 1. Subsystem Boundaries & Verification
 Use root automation to execute standard quality gates across subsystems:
-- **Full-Suite Check**: Run tests with `PYTHONPATH=src python3 -m unittest discover tests`.
+- **Full-Suite Check**: Run tests with `uv run python -m unittest discover tests`.
 - **Generated Types Are Read-Only**: Never edit generated types directly. Update schemas/migrations and run the generator command.
 
 ## 2. Documentation Guidelines
