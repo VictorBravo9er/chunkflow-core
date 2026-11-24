@@ -34,12 +34,16 @@ class VectorIndex:
     ) -> list[QueryResult]:
         candidates = self.chunks
 
-        # Apply metadata filters
-        if filters:
-            for flt in filters:
-                candidates = [
-                    c for c in candidates if c.metadata.get(flt.key) == flt.value
-                ]
+        # for flt in filters:
+        candidates = (
+            candidates
+            if not filters
+            else [
+                c
+                for c in candidates
+                if all(c.metadata.get(flt.key) == flt.value for flt in filters)  # pyright: ignore[reportAny]
+            ]
+        )
 
         scored: list[tuple[float, Chunk]] = []
         for chunk in candidates:
