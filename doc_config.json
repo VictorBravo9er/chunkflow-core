@@ -1,0 +1,15 @@
+{
+  "active_doc_types": [
+    "systems",
+    "agents_rules"
+  ],
+  "core_dirs_map": {
+    "all": []
+  },
+  "source_extensions": [
+    ".py"
+  ],
+  "ignored_files": [
+    "__init__.py"
+  ]
+}

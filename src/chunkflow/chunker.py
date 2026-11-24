@@ -2,18 +2,18 @@
 from __future__ import annotations
 
 import re
-from typing import List
-from chunkflow.models import Document, Chunk
+
+from chunkflow.models import Chunk, Document
 
 
 class SlidingWindowChunker:
     def __init__(self, chunk_size: int = 200, chunk_overlap: int = 40) -> None:
         if chunk_overlap >= chunk_size:
             raise ValueError("chunk_overlap must be strictly less than chunk_size")
-        self.chunk_size = chunk_size
-        self.chunk_overlap = chunk_overlap
+        self.chunk_size: int = chunk_size
+        self.chunk_step: int = chunk_size - chunk_overlap
 
-    def chunk_document(self, doc: Document) -> List[Chunk]:
+    def chunk_document(self, doc: Document) -> list[Chunk]:
         text = doc.content
         if not text.strip():
             return []
@@ -23,8 +23,7 @@ class SlidingWindowChunker:
         if not words:
             return []
 
-        chunks: List[Chunk] = []
-        step = self.chunk_size - self.chunk_overlap
+        chunks: list[Chunk] = []
         idx = 0
         chunk_num = 0
 
@@ -48,7 +47,7 @@ class SlidingWindowChunker:
             chunks.append(chunk)
             chunk_num += 1
 
-            idx += step
+            idx += self.chunk_step
             if idx >= len(words):
                 break
 
@@ -57,19 +56,19 @@ class SlidingWindowChunker:
 
 class SentenceBoundaryChunker:
     def __init__(self, max_words_per_chunk: int = 150) -> None:
-        self.max_words_per_chunk = max_words_per_chunk
+        self.max_words_per_chunk: int = max_words_per_chunk
 
-    def chunk_document(self, doc: Document) -> List[Chunk]:
+    def chunk_document(self, doc: Document) -> list[Chunk]:
         text = doc.content
         if not text.strip():
             return []
 
         # Split sentences roughly by . ! ? followed by space
         sentences = re.split(r"(?<=[.!?])\s+", text)
-        chunks: List[Chunk] = []
+        chunks: list[Chunk] = []
 
-        current_words: List[str] = []
-        current_sentences: List[str] = []
+        current_words: list[str] = []
+        current_sentences: list[str] = []
         chunk_num = 0
 
         for sentence in sentences:

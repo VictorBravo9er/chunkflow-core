@@ -2,19 +2,19 @@
 from __future__ import annotations
 
 import hashlib
+
 import numpy as np
-from typing import List
 
 
 class DeterministicEmbedder:
     """Produces deterministic normalized dense embedding vectors from text.
-    
+
     Uses SHA-256 seed hashing to produce realistic, reproducible unit vectors
     across fixed dimensions without requiring an external heavy LLM model download.
     """
 
     def __init__(self, dimension: int = 64) -> None:
-        self.dimension = dimension
+        self.dimension: int = dimension
 
     def embed_text(self, text: str) -> np.ndarray:
         # Generate pseudo-random vector seeded by string hash
@@ -29,7 +29,7 @@ class DeterministicEmbedder:
             vec /= norm
         return vec
 
-    def embed_batch(self, texts: List[str]) -> List[np.ndarray]:
+    def embed_batch(self, texts: list[str]) -> list[np.ndarray]:
         return [self.embed_text(t) for t in texts]
 
 

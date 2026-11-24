@@ -2,7 +2,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 import numpy as np
 
 
@@ -10,7 +11,7 @@ import numpy as np
 class Document:
     doc_id: str
     content: str
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -21,8 +22,8 @@ class Chunk:
     token_count: int
     char_offset_start: int
     char_offset_end: int
-    metadata: Dict[str, Any] = field(default_factory=dict)
-    embedding: Optional[np.ndarray] = None
+    metadata: dict[str, Any] = field(default_factory=dict)
+    embedding: np.ndarray | None = None
 
 
 @dataclass
