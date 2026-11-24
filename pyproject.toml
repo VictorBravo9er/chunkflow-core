@@ -1,0 +1,13 @@
+[project]
+name = "chunkflow-core"
+version = "0.1.0"
+description = "Text chunking, dense vector embedding, and semantic retrieval engine"
+authors = [{ name = "Vikramjit Borah", email = "vikramjitborah@gmail.com" }]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24.0"
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
