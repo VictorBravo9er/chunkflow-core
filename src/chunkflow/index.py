@@ -32,16 +32,14 @@ class VectorIndex:
         top_k: int = 5,
         filters: list[SearchFilter] | None = None,
     ) -> list[QueryResult]:
-        candidates = self.chunks
-
-        # for flt in filters:
         candidates = (
-            candidates
+            [c for c in self.chunks if c.embedding is not None]
             if not filters
             else [
                 c
-                for c in candidates
-                if all(c.metadata.get(flt.key) == flt.value for flt in filters)  # pyright: ignore[reportAny]
+                for c in self.chunks
+                if c.embedding is not None
+                and all(c.metadata.get(flt.key) != flt.value for flt in filters)  # pyright: ignore[reportAny]
             ]
         )
 
