@@ -39,7 +39,7 @@ class VectorIndex:
                 c
                 for c in self.chunks
                 if c.embedding is not None
-                and all(c.metadata.get(flt.key) != flt.value for flt in filters)  # pyright: ignore[reportAny]
+                and all(c.metadata.get(flt.key) == flt.value for flt in filters)  # pyright: ignore[reportAny]
             ]
         )
 
