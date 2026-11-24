@@ -97,6 +97,13 @@ def build_parser() -> argparse.ArgumentParser:
         help="Input format (default: auto; stdin defaults to text unless --format jsonl is specified)",
     )
     parser.add_argument(
+        "--output",
+        "-o",
+        choices=["text", "json", "jsonl"],
+        default="text",
+        help="Output format: 'text' (default), 'json', or 'jsonl'",
+    )
+    parser.add_argument(
         "--top-k",
         "-k",
         type=int,
@@ -149,10 +156,34 @@ def main(argv: list[str] | None = None) -> int:
     pipeline.ingest_batch(documents)
 
     results = pipeline.query(args.query, top_k=args.top_k)
-    print(f"Top {len(results)} matches for query '{args.query}':\n")
-    for r in results:
-        print(f"[{r.rank}] Score: {r.score:.4f} | ID: {r.chunk.chunk_id}")
-        print(f"    Text: {r.chunk.text}\n")
+
+    if args.output == "json":
+        items = [
+            {
+                "chunk_id": r.chunk.chunk_id,
+                "score": r.score,
+                "rank": r.rank,
+                "text": r.chunk.text,
+                "metadata": dict(r.chunk.metadata),
+            }
+            for r in results
+        ]
+        print(json.dumps(items, indent=2))
+    elif args.output == "jsonl":
+        for r in results:
+            item = {
+                "chunk_id": r.chunk.chunk_id,
+                "score": r.score,
+                "rank": r.rank,
+                "text": r.chunk.text,
+                "metadata": dict(r.chunk.metadata),
+            }
+            print(json.dumps(item))
+    else:
+        print(f"Top {len(results)} matches for query '{args.query}':\n")
+        for r in results:
+            print(f"[{r.rank}] Score: {r.score:.4f} | ID: {r.chunk.chunk_id}")
+            print(f"    Text: {r.chunk.text}\n")
 
     return 0
 
